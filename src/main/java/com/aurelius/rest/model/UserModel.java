@@ -44,10 +44,10 @@ public class UserModel {
 		UserEntity userEntity = new UserEntity();
 		userEntity.setName(name);
 		userEntity.setAddress(address);
-		userEntity.setSlug(generateSlug());
 		return userEntity;
 	}
 	public String generateSlug() {
-		return name + Math.random();
+		this.slug = name + Math.random();
+		return slug;
 	}
 }

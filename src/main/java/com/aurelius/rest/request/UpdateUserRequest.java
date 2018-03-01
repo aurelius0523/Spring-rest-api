@@ -1,16 +1,7 @@
 package com.aurelius.rest.request;
 
-import javax.validation.constraints.NotNull;
-
-import io.swagger.annotations.ApiModelProperty;
-
-public class CreateUserRequest {
-	@ApiModelProperty(required = true)
-	@NotNull
+public class UpdateUserRequest {
 	private String name;
-	
-	@ApiModelProperty(required = true)
-	@NotNull
 	private String address;
 	
 	public String getName() {

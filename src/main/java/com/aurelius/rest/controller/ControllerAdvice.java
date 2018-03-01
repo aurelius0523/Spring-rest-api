@@ -12,7 +12,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 
 import com.aurelius.rest.Error;
 import com.aurelius.rest.enumeration.InternalCode;
@@ -38,7 +37,7 @@ public class ControllerAdvice {
 	
 	@ExceptionHandler({MethodArgumentNotValidException.class})
 	public ResponseEntity<Object> handleInvalidArgument(MethodArgumentNotValidException ex) {
-		 BindingResult result = ex.getBindingResult();
+		BindingResult result = ex.getBindingResult();
         List<org.springframework.validation.FieldError> fieldErrors = result.getFieldErrors();
 
         Error error = new Error();
