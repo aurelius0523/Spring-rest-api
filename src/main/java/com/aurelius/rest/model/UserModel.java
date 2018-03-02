@@ -1,13 +1,20 @@
 package com.aurelius.rest.model;
 
-import com.aurelius.rest.entity.UserEntity;
-
 public class UserModel {
 	private String userId;
-	private String name;
+	private String firstName;
+	private String lastName;
+	private String userName;
 	private String address;
 	private String slug;
+	private String email;
 	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	public String getUserId() {
 		return userId;
 	}
@@ -20,34 +27,38 @@ public class UserModel {
 	public void setSlug(String slug) {
 		this.slug = slug;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public String getAddress() {
 		return address;
 	}
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public static UserModel mapFromEntityToModel(UserEntity userEntity) {
-		UserModel model = new UserModel();
-		model.setUserId(userEntity.getId());
-		model.setAddress(userEntity.getAddress());
-		model.setName(userEntity.getName());
-		model.setSlug(userEntity.getSlug());
-		return model;
+	public String getFirstName() {
+		return firstName;
 	}
-	public UserEntity mapFromModelToEntity() {
-		UserEntity userEntity = new UserEntity();
-		userEntity.setName(name);
-		userEntity.setAddress(address);
-		return userEntity;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	public String generateSlug() {
-		this.slug = name + Math.random();
-		return slug;
+		return generateSlug(0);
+	}
+	public String generateSlug(long lastId) {
+		if (lastId == 0) {
+			return userName;
+		} else {
+			return userName + "." + (lastId + 1);
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package com.aurelius.rest.service;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,9 @@ import com.aurelius.rest.model.UserModel;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
+	private ModelMapper mapper;
+	
+	@Autowired
 	private UserRepository userRepository;
 	
 	@Override
@@ -27,29 +31,28 @@ public class UserServiceImpl implements UserService {
 		if (userEntity == null) {
 			throw new ResourceNotFoundException();
 		} else {
-			return UserModel.mapFromEntityToModel(userEntity);
+			return mapper.map(userEntity, UserModel.class);
 		}
 	}
 
 	@Override
 	public UserModel createUser(UserModel userModel) {
-		if (!isNameUnique(userModel.getName())) {
+		long isEmailUnique = userRepository.countByEmail(userModel.getEmail());
+		
+		if (isEmailUnique != 0) {
 			throw new ConflictException();
 		} else {
-			userModel.generateSlug();
-			UserEntity savedUserEntity = userRepository.save(userModel.mapFromModelToEntity());
-			return UserModel.mapFromEntityToModel(savedUserEntity);
+			long userCountWithThisUsername = userRepository.countByUserName(userModel.getUserName());
+			userModel.setSlug(userModel.generateSlug(userCountWithThisUsername));
+			UserEntity savedUserEntity = userRepository.save(mapper.map(userModel, UserEntity.class));
+			return mapper.map(savedUserEntity, UserModel.class);
 		}
 	}
 	
-	private boolean isNameUnique(String name) {
-		return userRepository.findByName(name) == null;
-	}
-
 	@Override
 	public UserModel updateUser(String userId, UserModel userModel) {
-		UserEntity entityToSave = userModel.mapFromModelToEntity();
-		return UserModel.mapFromEntityToModel(userRepository.save(entityToSave));
+		UserEntity entityToSave = mapper.map(userModel, UserEntity.class);
+		return mapper.map(userRepository.save(entityToSave), UserModel.class);
 	}
 
 	@Override
@@ -58,7 +61,7 @@ public class UserServiceImpl implements UserService {
 		Pageable pageable = new PageRequest(offset, limit, sort);
 		
 		return userRepository.findAll(pageable)
-				.map(userEntity -> UserModel.mapFromEntityToModel(userEntity));
+				.map(userEntity -> mapper.map(userEntity, UserModel.class));
 	}
 
 	@Override

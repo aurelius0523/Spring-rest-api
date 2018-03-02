@@ -2,6 +2,7 @@ package com.aurelius.rest.controller;
 
 import javax.validation.Valid;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
@@ -22,7 +23,8 @@ import com.aurelius.rest.service.UserService;
 
 @RestController
 public class UserController {
-	//TODO find a mapping framework
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@Autowired
 	private UserService userService;
@@ -43,21 +45,13 @@ public class UserController {
 	
 	@PostMapping("/users")
 	public ResponseEntity<UserModel> createUser(@Valid @RequestBody CreateUserRequest request) {
-		UserModel userModel = new UserModel();
-		userModel.setAddress(request.getAddress());
-		userModel.setName(request.getName());
-		
-		return new ResponseEntity<>(userService.createUser(userModel), HttpStatus.CREATED);
+		return new ResponseEntity<>(userService.createUser(modelMapper.map(request, UserModel.class)), HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/users/{userId}")
 	public UserModel updateUser(@PathVariable("userId") String userId,
 			@Valid @RequestBody UpdateUserRequest request) {
-		UserModel userModel = new UserModel();
-		userModel.setAddress(request.getAddress());
-		userModel.setName(request.getName());
-		
-		return userService.updateUser(userId, userModel);
+		return userService.updateUser(userId, modelMapper.map(request, UserModel.class));
 	}
 	
 	// TODO find a way to ignore null fields when updating
