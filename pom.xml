@@ -96,26 +96,11 @@
 		    <artifactId>springfox-bean-validators</artifactId>
 		    <version>2.8.0</version>
 		</dependency>
-		<!-- APM tool for Spring https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready -->
+		<!-- Model Mapper library that is pre-configured. Good learning in source code https://github.com/jmnarloch/modelmapper-spring-boot-starter -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<!-- APM visualization -->
-		<dependency>
-			<groupId>de.codecentric</groupId>
-			<artifactId>spring-boot-admin-server</artifactId>
-			<version>1.5.2</version>
-		</dependency>
-		<dependency>
-			<groupId>de.codecentric</groupId>
-			<artifactId>spring-boot-admin-server-ui</artifactId>
-			<version>1.5.2</version>
-		</dependency>
-		<dependency>
-			<groupId>de.codecentric</groupId>
-			<artifactId>spring-boot-admin-starter-client</artifactId>
-			<version>1.5.2</version>
+		    <groupId>com.github.jmnarloch</groupId>
+		    <artifactId>modelmapper-spring-boot-starter</artifactId>
+		    <version>1.1.0</version>
 		</dependency>
 	</dependencies>
 	<build>
